@@ -1,27 +1,67 @@
-# AngularFileUpload
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.1.
+# Angular / Node.js file upload project
 
-## Development server
+  
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+this project is done to show how to properly upload a file using angular and NodeJs
+  
+Tested on Angular 6/7/8
 
-## Code scaffolding
+* [Install](#install)
+* [Usage](#usage)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+ 
+## Install
+##### clone and install npm dependencies:
 
-## Build
+    npm install
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+##### Run the project with:
+```
+ng serve 
+```
+then
+```
+node server.js
+```
+## Usage
+#### Node.js
 
-## Running unit tests
+In this project, we used a Multer as a Node.js module to receive the file, Multer integration in Node.js is the following : 
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+``` const multer = require('multer')
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '.' + file.originalname.split('.')[file.originalname.split('.').length - 1])
+  }
+})
 
-## Running end-to-end tests
+const upload = multer({ storage: storage })
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+After that, its easier to integrate with any api call : 
 
-## Further help
+```
+app.post('/upload', upload.single('file'), (req, res) => {
+  res.send({ msg: 'file received' })
+})
+```
+#### Angular
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+The interesting part in angular is when we used the FormData class to send the file :
+
+```
+ const formData = new FormData();
+ formData.append('file', this.selectedFile);
+```
+
+ 
+
+## Contribution
+
+You can fork project from github. Pull requests are kindly accepted.
+1. npm install
+3. Run demo: ng serve / npm start
